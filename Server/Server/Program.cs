@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
+using Server.GameContents;
 using ServerCore;
 
 namespace Server
@@ -24,6 +25,8 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			RoomManager.Instance.CreateAndAddRoom();//여기서 ID가 1번인 GameRoom이 생성된다.
+
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);

@@ -7,18 +7,43 @@ using UnityEngine;
 
 class PacketHandler
 {
-	public static void S_ChatHandler(PacketSession session, IMessage packet)
-	{
-		S_Chat chatPacket = packet as S_Chat;
-		ServerSession serverSession = session as ServerSession;
-
-		Debug.Log(chatPacket.Context);//워커쓰레드여도 디버그는 찍을 수 있다.
-		//GameObject같은 것들은 PacketQueue에 일단 넣어야한다. 
-	}
-
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
 		ServerSession serverSession = session as ServerSession;
-	}
+
+        Debug.Log("S_EnterGame");
+        Debug.Log(enterGamePacket.Playerinfo);
+    }
+
+    public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
+    {
+        S_LeaveGame LeaveGamePacket = packet as S_LeaveGame;
+        ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_LeaveGameHandler");
+    }
+
+    public static void S_SpawnHandler(PacketSession session, IMessage packet)
+    {
+        S_Spawn SpawnPacket = packet as S_Spawn;
+        ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_SpawnHandler");
+        Debug.Log(SpawnPacket.Playerinfos);
+    }
+    public static void S_DespawnHandler(PacketSession session, IMessage packet)
+    {
+        S_Despawn DespawnPacket = packet as S_Despawn;
+        ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_DespawnHandler");
+    }
+    public static void S_MoveHandler(PacketSession session, IMessage packet)
+    {
+        S_Move MovePacket = packet as S_Move;
+        ServerSession serverSession = session as ServerSession;
+
+        Debug.Log("S_MoveHandler");
+    }
 }

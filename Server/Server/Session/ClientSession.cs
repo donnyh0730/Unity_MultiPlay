@@ -8,11 +8,13 @@ using ServerCore;
 using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
+using Server.GameContents;
 
 namespace Server
 {
-	class ClientSession : PacketSession
+	public class ClientSession : PacketSession
 	{
+		public Player MyPlayer { get; set; }
 		public int SessionId { get; set; }
 
 		public void Send(IMessage packet)
@@ -21,7 +23,7 @@ namespace Server
 			MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), MessageName);//MsgId중에서 MessageName과 이름이 같은 Enum값을 리턴해줌.
 			ushort size = (ushort)packet.CalculateSize();
             byte[] sendBuffer = new byte[size + 4];
-            Array.Copy(BitConverter.GetBytes(size + 4), 0, sendBuffer, 0, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes((ushort)(size + 4)), 0, sendBuffer, 0, sizeof(ushort));
             //맨앞에 2바이트(ushort) size기입
             Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
             //그다음 2바이트는(ushort) 는 MsgId기입. 
@@ -34,13 +36,14 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			// PROTO Test
-			S_Chat chat = new S_Chat()
-			{
-				Context = "안녕하세요"
-			};
-
-			Send(chat);
+			MyPlayer = PlayerManager.Instance.CreateAndAddPlayer();
+            {
+				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
+				MyPlayer.Info.PosX = 0;
+                MyPlayer.Info.PosY = 0;
+				MyPlayer.Session = this;
+            }
+			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
         }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -50,6 +53,8 @@ namespace Server
 
 		public override void OnDisconnected(EndPoint endPoint)
 		{
+			RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
+
 			SessionManager.Instance.Remove(this);
 
 			Console.WriteLine($"OnDisconnected : {endPoint}");
