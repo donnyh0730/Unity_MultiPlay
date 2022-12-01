@@ -17,6 +17,10 @@ public class NetworkManager
 
 	public void Init()
 	{
+        PacketManager.Instance.CustomHandler = (s, m, i) =>
+        {
+            PacketQueue.Instance.Push(i, m);
+        };
 		// DNS (Domain Name System)
 		string host = Dns.GetHostName();
 		IPHostEntry ipHost = Dns.GetHostEntry(host);

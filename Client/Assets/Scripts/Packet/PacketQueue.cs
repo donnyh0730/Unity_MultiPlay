@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class PacketMessage
 {
+	public PacketMessage(ushort id, IMessage message)
+    {
+		Id = id;
+		Message = message;
+	}
 	public ushort Id { get; set; }
 	public IMessage Message { get; set; }
 }
@@ -21,7 +26,7 @@ public class PacketQueue
 	{
 		lock (_lock)
 		{
-			_packetQueue.Enqueue(new PacketMessage() { Id = id, Message = packet });
+			_packetQueue.Enqueue(new PacketMessage(id, packet)) ;
 		}
 	}
 

@@ -8,7 +8,7 @@ namespace Server.GameContents
     {
         public static PlayerManager Instance { get; set; } = new PlayerManager();
         object _lock = new object();
-        Dictionary<int, Player> _players = new Dictionary<int, Player> ();
+        Dictionary<int, Player> _players = new Dictionary<int, Player>();
         int GenPlayerId = 1; //TODO
 
         public Player CreateAndAddPlayer()
