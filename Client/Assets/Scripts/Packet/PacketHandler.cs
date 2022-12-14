@@ -49,6 +49,15 @@ class PacketHandler
         S_Move MovePacket = packet as S_Move;
         ServerSession serverSession = session as ServerSession;
 
-        Debug.Log("S_MoveHandler");
+        GameObject go = Managers.Object.FindById(MovePacket.PlayerId);
+        if (go == null)
+            return;
+
+        CreatureController cc = go.GetComponent<CreatureController>();
+        if (cc == null)
+            return;
+
+        cc.PosInfo = MovePacket.PosInfo;//여기서 좌표가 Set되는 순간에 이동을 시작한다.
+        //키보드 입력방식도 방향키에 따라서 한칸 앞의 좌표를 Set하는 방식이었다. 
     }
 }

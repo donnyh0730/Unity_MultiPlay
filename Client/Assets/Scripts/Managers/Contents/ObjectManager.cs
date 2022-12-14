@@ -19,7 +19,7 @@ public class ObjectManager
 
 			MyPlayer = go.GetComponent<MyPlayerController>();
 			MyPlayer.Id = info.PlayerId;
-			MyPlayer.CellPos = new Vector3Int(info.PosX, info.PosY, 0);
+			MyPlayer.PosInfo = info.PosInfo;
         }
         else//다른 유저플레이어를 소환해야하는 경우.
         {
@@ -29,7 +29,7 @@ public class ObjectManager
 
 			PlayerController pc = go.GetComponent<PlayerController>();
 			pc.Id = info.PlayerId;
-			pc.CellPos = new Vector3Int(info.PosX, info.PosY, 0);
+			pc.PosInfo = info.PosInfo;
 		}
     }
 
@@ -55,6 +55,13 @@ public class ObjectManager
 
 		Remove(MyPlayer.Id);
 		MyPlayer = null;
+    }
+
+	public GameObject FindById(int id)
+    {
+		GameObject go = null;
+		_objects.TryGetValue(id, out go);
+		return go;
     }
 
 	public GameObject Find(Vector3Int cellPos)
@@ -85,6 +92,10 @@ public class ObjectManager
 
 	public void Clear()
 	{
+		foreach (GameObject obj in _objects.Values)
+		{
+			Managers.Resource.Destroy(obj);
+		}
 		_objects.Clear();
 	}
 }
