@@ -20,6 +20,7 @@ public class ObjectManager
 			MyPlayer = go.GetComponent<MyPlayerController>();
 			MyPlayer.Id = info.PlayerId;
 			MyPlayer.PosInfo = info.PosInfo;
+			MyPlayer.SyncGridPosToWorldPos();
         }
         else//다른 유저플레이어를 소환해야하는 경우.
         {
@@ -30,6 +31,7 @@ public class ObjectManager
 			PlayerController pc = go.GetComponent<PlayerController>();
 			pc.Id = info.PlayerId;
 			pc.PosInfo = info.PosInfo;
+			pc.SyncGridPosToWorldPos();
 		}
     }
 

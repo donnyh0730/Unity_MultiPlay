@@ -30,7 +30,8 @@ namespace Server.GameContents
 
                     S_Spawn spawnPacket = new S_Spawn();
                     //기존에 접속해서 스폰되어있던 플레이어들을 알아야 클라이언트에서 똑같이 스폰할 수 있기때문에,
-                    foreach(Player p in _players)//내가 들어왔을때 기존에 있었던 플레이어리스트를 전송.
+                    //내가 들어왔을때 기존에 있었던 플레이어리스트를 나에게 전송.
+                    foreach (Player p in _players)
                     {
                         if (newPlayer != p)
                             spawnPacket.Playerinfos.Add(p.Info);
@@ -80,6 +81,44 @@ namespace Server.GameContents
                         p.Session.Send(despawnPacket);
                     }
                 }
+            }
+        }
+
+        public void HandleMove(Player player, C_Move movePacket)
+        {
+            if (player == null)
+                return;
+            //▼아래 로직은 공유데이터를 많이 접근하는 코드이므로 lock이 필요하다.
+            //따라서 락을 소유하는 room에서 처리하는 것이 안전하다.
+            lock (_lock)
+            {  
+                player.Info.PosInfo = movePacket.PosInfo;
+
+                S_Move resMovePacket = new S_Move();
+                resMovePacket.PlayerId = player.Info.PlayerId;
+                resMovePacket.PosInfo = movePacket.PosInfo;
+
+                Broadcast(resMovePacket);
+            }
+        }
+
+        public void HandleSkill(Player player, C_Skill skillPacket)
+        {
+            if (player == null)
+                return;
+            lock (_lock)
+            {
+                PlayerInfo info = player.Info;
+                if (info.PosInfo.State != CreatureState.Idle)
+                    return;
+
+                //TODO: 스킬 사용 가능 여부 체크.
+                info.PosInfo.State = CreatureState.Skill;
+                S_Skill ServerSkillPacket = new S_Skill() { Info = new SkillInfo() };
+
+                ServerSkillPacket.PlayerId = info.PlayerId;
+                ServerSkillPacket.Info.SkillId = skillPacket.Info.SkillId;
+                Broadcast(ServerSkillPacket);
             }
         }
 

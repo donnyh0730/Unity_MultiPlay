@@ -6,6 +6,8 @@ using static Define;
 
 public class MyPlayerController : PlayerController
 {
+    Coroutine _coInputCooltime = null;
+
     protected override void Init()
     {
         base.Init();
@@ -36,12 +38,22 @@ public class MyPlayerController : PlayerController
         }
 
         // 스킬 상태로 갈지 확인
-        if (Input.GetKey(KeyCode.Space))
+        if (_coInputCooltime == null && Input.GetKey(KeyCode.Space))
         {
-            State = CreatureState.Skill;
-            //_coSkill = StartCoroutine("CoStartPunch");
-            _coSkill = StartCoroutine("CoStartShootArrow");
+            int skillid = 0;
+
+            C_Skill skillPacket = new C_Skill() { Info = new SkillInfo() };
+            skillPacket.Info.SkillId = skillid;
+            Managers.Network.Send(skillPacket);
+
+            _coInputCooltime = StartCoroutine(CoInputCooltime(0.2f));
         }
+    }
+
+    IEnumerator CoInputCooltime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _coInputCooltime = null;
     }
 
     void LateUpdate()
@@ -74,9 +86,10 @@ public class MyPlayerController : PlayerController
         }
     }
 
-    //거의 도착했을 쯤 1회 불려지고 정수형 그리드좌표를 확정적으로 바꿔주는 함수이다. 
+    //거의 도착했을 쯤 1,2회 불려지고 정수형 그리드좌표를 확정적으로 바꿔주는 함수이다. 
     protected override void MoveToNextPos()//따라서 이동패킷을 보내기에 가장 적잘타이밍이된다.
     {
+        Debug.Log("MoveToNextPos()!!");
         if (Dir == MoveDir.None)
         {
             State = CreatureState.Idle;
@@ -112,7 +125,7 @@ public class MyPlayerController : PlayerController
         CheckUpdatedSyncMoveStatus();
     }
 
-    void CheckUpdatedSyncMoveStatus()
+    protected override void CheckUpdatedSyncMoveStatus()
     {
         if (_updated)
         {

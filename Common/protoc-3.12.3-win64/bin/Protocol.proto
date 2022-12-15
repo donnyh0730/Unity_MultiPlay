@@ -4,65 +4,81 @@ package Protocol;
 import "google/protobuf/timestamp.proto";
 option csharp_namespace = "Google.Protobuf.Protocol";
 
-enum MsgId {
+enum MsgId 
+{
 	S_ENTER_GAME = 0;
 	S_LEAVE_GAME = 1;
 	S_SPAWN = 2;
 	S_DESPAWN = 3;
 	C_MOVE = 4;
 	S_MOVE = 5;
+	C_SKILL = 6;
+	S_SKILL = 7;
 }
-
-enum CreatureState{
+enum CreatureState
+{
 	IDLE = 0;
 	MOVING = 1;
 	SKILL = 2;
 	DEAD = 3;
 }
-
-enum MoveDir{
+enum MoveDir
+{
 	NONE = 0;
 	UP = 1;
 	DOWN = 2;
 	LEFT = 3;
 	RIGHT = 4;
 }
-
-message PlayerInfo{
+message PlayerInfo
+{
 	int32 playerId = 1;
 	string name = 2;
 	PositionInfo posInfo = 3;
 }
-
-message PositionInfo{
+message PositionInfo
+{
 	CreatureState state = 1;
 	MoveDir moveDir = 2;
 	int32 posX = 3;
 	int32 posY = 4;
 }
-
-message S_EnterGame {
+message S_EnterGame 
+{
 	PlayerInfo playerinfo = 1;
 }
-
-message S_LeaveGame{
+message S_LeaveGame
+{
 
 }
-
-message S_Spawn{
+message S_Spawn
+{
 	repeated PlayerInfo playerinfos = 1;//내 플레이어가 스폰될때 주변에 같이 소환될 크리처목록.
 }
-
-message S_Despawn{
+message S_Despawn
+{
 	repeated int32 playerids = 1;
 }
-
-message C_Move{
+message C_Move
+{
 	PositionInfo posInfo = 1;
 }
-
-message S_Move{
+message S_Move
+{
 	int32 playerId = 1;
 	PositionInfo posInfo = 2;
 }
-
+message C_Skill
+{
+	SkillInfo info = 1;
+}
+message S_Skill
+{
+	int32 playerId = 1;
+	SkillInfo info = 2;
+}
+message SkillInfo
+{
+	int32 skillId = 1;
+	//TODO : 스킬 타입 데미지 등등 
+}

@@ -7,10 +7,10 @@ using UnityEngine;
 
 class PacketHandler
 {
-	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
-	{
-		S_EnterGame enterGamePacket = packet as S_EnterGame;
-        Managers.Object.AddPlayer(enterGamePacket.Playerinfo, bMyPlayer : true);
+    public static void S_EnterGameHandler(PacketSession session, IMessage packet)
+    {
+        S_EnterGame enterGamePacket = packet as S_EnterGame;
+        Managers.Object.AddPlayer(enterGamePacket.Playerinfo, bMyPlayer: true);
 
         Debug.Log("S_EnterGame");
         Debug.Log(enterGamePacket.Playerinfo);
@@ -27,7 +27,7 @@ class PacketHandler
     public static void S_SpawnHandler(PacketSession session, IMessage packet)
     {
         S_Spawn SpawnPacket = packet as S_Spawn;
-        foreach(PlayerInfo info in SpawnPacket.Playerinfos)
+        foreach (PlayerInfo info in SpawnPacket.Playerinfos)
         {
             Managers.Object.AddPlayer(info, bMyPlayer: false);
         }
@@ -59,5 +59,21 @@ class PacketHandler
 
         cc.PosInfo = MovePacket.PosInfo;//여기서 좌표가 Set되는 순간에 이동을 시작한다.
         //키보드 입력방식도 방향키에 따라서 한칸 앞의 좌표를 Set하는 방식이었다. 
+    }
+
+    public static void S_SkillHandler(PacketSession session, IMessage packet)
+    {
+        S_Skill SkillPacket = packet as S_Skill;
+
+        GameObject go = Managers.Object.FindById(SkillPacket.PlayerId);
+        if (go == null)
+            return;
+
+        PlayerController pc = go.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+            pc.UseSkill(SkillPacket.Info.SkillId);
+        }
+
     }
 }
