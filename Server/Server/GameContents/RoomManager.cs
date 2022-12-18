@@ -11,10 +11,10 @@ namespace Server.GameContents
         Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
         int GenRoomId = 1;
 
-        public GameRoom CreateAndAddRoom()
+        public GameRoom CreateAndAddRoom(int mapId)
         {
             GameRoom gameRoom = new GameRoom();
-
+            gameRoom.Init(mapId);
             lock(_lock)
             {
                 gameRoom.RoomId = GenRoomId;

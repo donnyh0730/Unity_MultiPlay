@@ -25,7 +25,7 @@ namespace Server
 
 		static void Main(string[] args)
 		{
-			RoomManager.Instance.CreateAndAddRoom();//여기서 ID가 1번인 GameRoom이 생성된다.
+			RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
