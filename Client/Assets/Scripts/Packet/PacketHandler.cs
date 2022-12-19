@@ -10,10 +10,10 @@ class PacketHandler
     public static void S_EnterGameHandler(PacketSession session, IMessage packet)
     {
         S_EnterGame enterGamePacket = packet as S_EnterGame;
-        Managers.Object.AddPlayer(enterGamePacket.Playerinfo, bMyPlayer: true);
+        Managers.Object.Add(enterGamePacket.ObjectInfo, bMyPlayer: true);
 
         Debug.Log("S_EnterGame");
-        Debug.Log(enterGamePacket.Playerinfo);
+        Debug.Log(enterGamePacket.ObjectInfo);
     }
 
     public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
@@ -27,17 +27,17 @@ class PacketHandler
     public static void S_SpawnHandler(PacketSession session, IMessage packet)
     {
         S_Spawn SpawnPacket = packet as S_Spawn;
-        foreach (PlayerInfo info in SpawnPacket.Playerinfos)
+        foreach (ObjectInfo info in SpawnPacket.ObjectInfos)
         {
-            Managers.Object.AddPlayer(info, bMyPlayer: false);
+            Managers.Object.Add(info, bMyPlayer: false);
         }
         Debug.Log("S_SpawnHandler");
-        Debug.Log(SpawnPacket.Playerinfos);
+        Debug.Log(SpawnPacket.ObjectInfos);
     }
     public static void S_DespawnHandler(PacketSession session, IMessage packet)
     {
         S_Despawn DespawnPacket = packet as S_Despawn;
-        foreach (int id in DespawnPacket.Playerids)
+        foreach (int id in DespawnPacket.ObjectIds)
         {
             Managers.Object.Remove(id);
         }
@@ -49,7 +49,7 @@ class PacketHandler
         S_Move MovePacket = packet as S_Move;
         ServerSession serverSession = session as ServerSession;
 
-        GameObject go = Managers.Object.FindById(MovePacket.PlayerId);
+        GameObject go = Managers.Object.FindById(MovePacket.ObjectId);
         if (go == null)
             return;
 
@@ -65,7 +65,7 @@ class PacketHandler
     {
         S_Skill SkillPacket = packet as S_Skill;
 
-        GameObject go = Managers.Object.FindById(SkillPacket.PlayerId);
+        GameObject go = Managers.Object.FindById(SkillPacket.ObjectId);
         if (go == null)
             return;
 

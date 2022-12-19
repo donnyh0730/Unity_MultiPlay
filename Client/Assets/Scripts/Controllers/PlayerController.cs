@@ -106,14 +106,14 @@ public class PlayerController : CreatureController
     {
         switch (skillId)
         {
-            case 0:
+            case 1:
                 {
                     _coSkill = StartCoroutine(CoStartPunch());
                 }
                 break;
-            case 1:
+            case 2:
                 {
-                    _coSkill = StartCoroutine(CoStartShootArrow());
+                    //_coSkill = StartCoroutine(CoStartShootArrow());
                 }
                 break;
 

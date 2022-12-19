@@ -35,46 +35,7 @@ public class ArrowController : CreatureController
 	{
 
 	}
-
-	protected override void MoveToNextPos()
-	{
-		Vector3Int destPos = CellPos;
-
-		switch (Dir)
-		{
-			case MoveDir.Up:
-				destPos += Vector3Int.up;
-				break;
-			case MoveDir.Down:
-				destPos += Vector3Int.down;
-				break;
-			case MoveDir.Left:
-				destPos += Vector3Int.left;
-				break;
-			case MoveDir.Right:
-				destPos += Vector3Int.right;
-				break;
-		}
-
-		if (Managers.Map.CanGo(destPos))
-		{
-			GameObject go = Managers.Object.Find(destPos);
-			if (go == null)
-			{
-				CellPos = destPos;
-			}
-			else
-			{
-				CreatureController cc = go.GetComponent<CreatureController>();
-				if (cc != null)
-					cc.OnDamaged();
-
-				Managers.Resource.Destroy(gameObject);
-			}
-		}
-		else
-		{
-			Managers.Resource.Destroy(gameObject);
-		}
-	}
+    //MoveToNextPos() 기존에 클라이언트에서 자체적으로 화살을 움직이던 코드는 지워주어야한다.
+    //왜냐하면 투사체의 시뮬레이팅도 서버에서 한다음 move패킷을 받아서 처리하게 될 것이기 때문이다.
+    
 }

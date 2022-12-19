@@ -41,7 +41,7 @@ public class MyPlayerController : PlayerController
         // 스킬 상태로 갈지 확인
         if (_coInputCooltime == null && Input.GetKey(KeyCode.Space))
         {
-            int skillid = 0;
+            int skillid = 2;
 
             C_Skill skillPacket = new C_Skill() { Info = new SkillInfo() };
             skillPacket.Info.SkillId = skillid;
