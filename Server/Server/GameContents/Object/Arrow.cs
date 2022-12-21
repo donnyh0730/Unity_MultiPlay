@@ -16,10 +16,13 @@ namespace Server.GameContents
         {
             if (Owner == null || Room == null)
                 return;
+            if (skillData == null || skillData.projectileInfo ==null)
+                return;
             if (_nextMoveTick >= Environment.TickCount64)
                 return;
 
-            _nextMoveTick = Environment.TickCount64 + 50;//50ms 주기로 실행.
+            long tick = (long)(1000 / skillData.projectileInfo.speed);
+            _nextMoveTick = Environment.TickCount64 + tick;
 
             Vector2Int destPos = GetFrontCellPos();
             if(Room.Map.CanGo(destPos))
@@ -38,6 +41,7 @@ namespace Server.GameContents
                 GameObject target = Room.Map.Find(destPos);
                 if(target != null)
                 {
+                    target.OnDamaged(this, skillData.damage);
                     //TODO 피격판정
                 }
                 Room.LeaveGame(Id);

@@ -12,6 +12,13 @@ namespace Server.GameContents
         public Player()
         {
             ObjectType = GameObjectType.Player;
+            Speed = 5.0f;
+        }
+
+        public override void OnDamaged(GameObject attacker, int damage)
+        {
+            //TODO
+            Console.WriteLine($"Damage : {damage}");
         }
     }
 }

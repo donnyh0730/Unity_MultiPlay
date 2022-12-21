@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
+using Server.Data;
 using Server.GameContents;
 using ServerCore;
 
@@ -25,7 +26,10 @@ namespace Server
 
 		static void Main(string[] args)
 		{
-			RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
+			ConfigManager.LoadConfig();
+			DataManager.LoadData();
+
+            RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
@@ -43,7 +47,6 @@ namespace Server
 			{
 				//JobTimer.Instance.Flush();
 				RoomManager.Instance.Find(1).Update();
-				Thread.Sleep(100);
 			}
 		}
 	}

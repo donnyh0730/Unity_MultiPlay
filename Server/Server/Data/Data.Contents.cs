@@ -1,10 +1,9 @@
 ﻿using Google.Protobuf.Protocol;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Text;
 
-namespace Data
+namespace Server.Data
 {
     [Serializable]
     public class StatData
@@ -46,7 +45,7 @@ namespace Data
     {
         public string name;
         public float speed;
-        public int range;
+        public float range;
         public string prefabpath;
     }
 

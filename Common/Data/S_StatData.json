@@ -1,5 +1,5 @@
 {
-  "stats": [
+  "statInfos": [
     {
       "level": "1",
       "maxHp": "200",
@@ -19,4 +19,4 @@
       "totalExp": "20"
     }
   ]
-} 
+}
