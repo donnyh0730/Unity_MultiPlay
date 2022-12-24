@@ -49,7 +49,7 @@ namespace Server.GameContents
                     Player player = gameObject as Player;
                     _players.Add(gameObject.Id, player);
                     player.Room = this;
-
+                    Map.ApplyMove(player, new Vector2Int(player.PosInfo.PosX, player.PosInfo.PosY));
                     //본인 클라이언트에도 접속되었음을 알림.
                     {
                         S_EnterGame enterPacket = new S_EnterGame();

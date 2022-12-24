@@ -32,7 +32,7 @@ class PacketHandler
             Managers.Object.Add(info, bMyPlayer: false);
         }
         Debug.Log("S_SpawnHandler");
-        Debug.Log(SpawnPacket.ObjectInfos);
+        //Debug.Log(SpawnPacket.ObjectInfos);
     }
     public static void S_DespawnHandler(PacketSession session, IMessage packet)
     {
@@ -73,6 +73,26 @@ class PacketHandler
         if (pc != null)
         {
             pc.UseSkill(SkillPacket.Info.SkillId);
+        }
+    }
+
+    public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
+    {
+        S_ChangeHp hpPacket = packet as S_ChangeHp;
+
+        GameObject go = Managers.Object.FindById(hpPacket.ObjectId);
+        if (go == null)
+            return;
+
+        CreatureController cc = go.GetComponent<CreatureController>();
+        if (cc != null)
+        {
+            //GameObject causer = Managers.Object.FindById(hpPakcet.causerId);
+            //CreatureController causerCC = go.GetComponent<CreatureController>();
+            //cc.OnDamaged(causerCC, hpPakcet.Hp);
+            cc.Stat.Hp = hpPacket.Hp;
+            Debug.Log($"Change Hp : {hpPacket.Hp}");
+            //TODO : UI
         }
 
     }

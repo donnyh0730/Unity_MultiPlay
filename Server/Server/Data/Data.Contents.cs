@@ -6,25 +6,19 @@ using System.Text;
 namespace Server.Data
 {
     [Serializable]
-    public class StatData
-    {
-        public int level;
-        public int maxHp;
-        public int attack;
-        public int totalExp;
-    }
-
-    [Serializable]
-    public class StatDataLoader : ILoader<int, StatData>
+    public class StatDataLoader : ILoader<int, StatInfo>
     {
         //↓↓ JsonUtility.FromJson을 해주면 처음에 여기(stats) List형태로 들어와있음.
-        public List<StatData> statInfos = new List<StatData>();
+        public List<StatInfo> statInfos = new List<StatInfo>();
 
-        public Dictionary<int, StatData> MakeDict()
+        public Dictionary<int, StatInfo> MakeDict()
         {
-            Dictionary<int, StatData> dict = new Dictionary<int, StatData>();
-            foreach (StatData stat in statInfos)
-                dict.Add(stat.level, stat);
+            Dictionary<int, StatInfo> dict = new Dictionary<int, StatInfo>();
+            foreach (StatInfo stat in statInfos)
+            {
+                stat.Hp = stat.MaxHp;
+                dict.Add(stat.Level, stat);
+            }
             return dict;
         }
     }

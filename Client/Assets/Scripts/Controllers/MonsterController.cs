@@ -124,7 +124,7 @@ public class MonsterController : CreatureController
 		}
 	}
 
-	public override void OnDamaged()
+	public override void OnDamaged(CreatureController attacker, int damage)
 	{
 		GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
 		effect.transform.position = transform.position;
@@ -183,17 +183,17 @@ public class MonsterController : CreatureController
 
 	IEnumerator CoStartPunch()
 	{
-		// 피격 판정
-		GameObject go = Managers.Object.Find(GetFrontCellPos());
-		if (go != null)
-		{
-			CreatureController cc = go.GetComponent<CreatureController>();
-			if (cc != null)
-				cc.OnDamaged();
-		}
+        // 피격 판정(서버 없을때)
+        GameObject go = Managers.Object.Find(GetFrontCellPos());
+        if (go != null)
+        {
+            CreatureController cc = go.GetComponent<CreatureController>();
+            if (cc != null)
+                cc.OnDamaged(this, Stat.Attack);
+        }
 
-		// 대기 시간
-		yield return new WaitForSeconds(0.5f);
+        // 대기 시간
+        yield return new WaitForSeconds(0.5f);
 		State = CreatureState.Moving;
 		_coSkill = null;
 	}

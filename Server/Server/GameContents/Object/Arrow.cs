@@ -41,7 +41,8 @@ namespace Server.GameContents
                 GameObject target = Room.Map.Find(destPos);
                 if(target != null)
                 {
-                    target.OnDamaged(this, skillData.damage);
+                    int Damage = Owner.Stat.Attack + skillData.damage;
+                    target.OnDamaged(this, Damage);
                     //TODO 피격판정
                 }
                 Room.LeaveGame(Id);

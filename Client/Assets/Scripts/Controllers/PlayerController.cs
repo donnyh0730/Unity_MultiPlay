@@ -144,7 +144,7 @@ public class PlayerController : CreatureController
         CheckUpdatedSyncMoveStatus();
     }
 
-    public override void OnDamaged()
+    public override void OnDamaged(CreatureController attacker, int damage)
     {
         Debug.Log("Player HIT !");
     }

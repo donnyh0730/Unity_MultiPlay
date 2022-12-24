@@ -7,30 +7,6 @@ using UnityEngine;
 namespace Data
 {
     [Serializable]
-    public class StatData
-    {
-        public int level;
-        public int maxHp;
-        public int attack;
-        public int totalExp;
-    }
-
-    [Serializable]
-    public class StatDataLoader : ILoader<int, StatData>
-    {
-        //↓↓ JsonUtility.FromJson을 해주면 처음에 여기(stats) List형태로 들어와있음.
-        public List<StatData> statInfos = new List<StatData>();
-
-        public Dictionary<int, StatData> MakeDict()
-        {
-            Dictionary<int, StatData> dict = new Dictionary<int, StatData>();
-            foreach (StatData stat in statInfos)
-                dict.Add(stat.level, stat);
-            return dict;
-        }
-    }
-
-    [Serializable]
     public class SkillData
     {
         public int id;

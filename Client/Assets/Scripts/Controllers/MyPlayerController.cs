@@ -139,4 +139,10 @@ public class MyPlayerController : PlayerController
         }
     }
 
+    public override void OnDamaged(CreatureController attacker, int damage)
+    {
+        base.OnDamaged(attacker, damage);
+
+
+    }
 }

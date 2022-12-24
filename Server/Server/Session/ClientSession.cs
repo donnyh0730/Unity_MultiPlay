@@ -9,6 +9,7 @@ using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
 using Server.GameContents;
+using Server.Data;
 
 namespace Server
 {
@@ -43,6 +44,12 @@ namespace Server
 				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
 				MyPlayer.Info.PosInfo.PosX = 0;
 				MyPlayer.Info.PosInfo.PosY = 0;
+
+				StatInfo stat = DataManager.StatDict[1];
+				if(stat == null)
+                    Console.WriteLine("Stat Data is not available.");
+				MyPlayer.Stat.MergeFrom(stat);
+
 				MyPlayer.Session = this;
             }
 			RoomManager.Instance.Find(1).EnterGame(MyPlayer);

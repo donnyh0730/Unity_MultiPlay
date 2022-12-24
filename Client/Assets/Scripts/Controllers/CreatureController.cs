@@ -299,8 +299,8 @@ public class CreatureController : MonoBehaviour
 
 	}
 
-	public virtual void OnDamaged()
+	public virtual void OnDamaged(CreatureController attacker, int damage)
 	{
 
-	}
+	} 
 }
