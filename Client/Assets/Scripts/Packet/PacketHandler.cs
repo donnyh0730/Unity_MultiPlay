@@ -90,9 +90,7 @@ class PacketHandler
             //GameObject causer = Managers.Object.FindById(hpPakcet.causerId);
             //CreatureController causerCC = go.GetComponent<CreatureController>();
             //cc.OnDamaged(causerCC, hpPakcet.Hp);
-            cc.Stat.Hp = hpPacket.Hp;
-            Debug.Log($"Change Hp : {hpPacket.Hp}");
-            //TODO : UI
+            cc.Hp = hpPacket.Hp;
         }
 
     }
