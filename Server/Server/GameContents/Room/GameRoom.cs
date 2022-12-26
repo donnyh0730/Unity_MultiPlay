@@ -64,7 +64,14 @@ namespace Server.GameContents
                             if (gameObject != p)
                                 spawnPacket.ObjectInfos.Add(p.Info);
                         }
-
+                        foreach (Monster m in _monsters.Values)
+                        {
+                            spawnPacket.ObjectInfos.Add(m.Info);
+                        }
+                        foreach (Projectile p in _projectiles.Values)
+                        {
+                            spawnPacket.ObjectInfos.Add(p.Info);
+                        }
                         player.Session.Send(spawnPacket);
                     }
                 }
@@ -73,6 +80,8 @@ namespace Server.GameContents
                     Monster monster = gameObject as Monster;
                     _monsters.Add(gameObject.Id, monster);
                     monster.Room = this;
+
+                    Map.ApplyMove(monster, new Vector2Int(monster.PosInfo.PosX, monster.PosInfo.PosY));
                 }
                 else if (type == GameObjectType.Projectile)
                 {

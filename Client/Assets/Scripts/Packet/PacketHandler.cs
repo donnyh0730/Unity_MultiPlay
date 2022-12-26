@@ -13,13 +13,12 @@ class PacketHandler
         Managers.Object.Add(enterGamePacket.ObjectInfo, bMyPlayer: true);
 
         Debug.Log("S_EnterGame");
-        Debug.Log(enterGamePacket.ObjectInfo);
     }
 
     public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
     {
         S_LeaveGame LeaveGamePacket = packet as S_LeaveGame;
-        Managers.Object.RemoveMyPlayer();
+        Managers.Object.Clear();
 
         Debug.Log("S_LeaveGameHandler");
     }
@@ -53,11 +52,11 @@ class PacketHandler
         if (go == null)
             return;
 
-        CreatureController cc = go.GetComponent<CreatureController>();
-        if (cc == null)
+        BaseController bc = go.GetComponent<BaseController>();
+        if (bc == null)
             return;
 
-        cc.PosInfo = MovePacket.PosInfo;//여기서 좌표가 Set되는 순간에 이동을 시작한다.
+        bc.PosInfo = MovePacket.PosInfo;//여기서 좌표가 Set되는 순간에 이동을 시작한다.
         //키보드 입력방식도 방향키에 따라서 한칸 앞의 좌표를 Set하는 방식이었다. 
     }
 
@@ -93,5 +92,22 @@ class PacketHandler
             cc.Hp = hpPacket.Hp;
         }
 
+    }
+
+
+    public static void S_DieHandler(PacketSession session, IMessage packet)
+    {
+        S_Die diePacket = packet as S_Die;
+
+        GameObject go = Managers.Object.FindById(diePacket.ObjectId);
+        if (go == null)
+            return;
+
+        CreatureController cc = go.GetComponent<CreatureController>();
+        if (cc != null)
+        {
+            cc.Hp = 0;
+            cc.OnDead();
+        }
     }
 }
