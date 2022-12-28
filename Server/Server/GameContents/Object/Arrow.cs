@@ -25,6 +25,8 @@ namespace Server.GameContents
             _nextMoveTick = Environment.TickCount64 + tick;
 
             Vector2Int destPos = GetFrontCellPos();
+
+            //TODO 화살 콜리전 체크 더 자주 하도록 해야함.(삑사리)
             if(Room.Map.CanGo(destPos))
             {
                 CellPos = destPos;

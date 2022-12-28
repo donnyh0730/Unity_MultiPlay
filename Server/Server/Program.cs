@@ -15,13 +15,13 @@ using ServerCore;
 
 namespace Server
 {
-	class Program
+	
+	public class Program
 	{
 		static Listener _listener = new Listener();
-
 		static void FlushRoom()
 		{
-			JobTimer.Instance.Push(FlushRoom, 250);
+			JobTimer.Instance.Push(FlushRoom, 250);//자기 자신을 250ms마다 다시호출 하게끔 람다로 넣음.
 		}
 
 		static void Main(string[] args)
@@ -42,10 +42,9 @@ namespace Server
 
 			//FlushRoom();
 			//JobTimer.Instance.Push(FlushRoom);
-
+			
 			while (true)
 			{
-				//JobTimer.Instance.Flush();
 				RoomManager.Instance.Find(1).Update();
 			}
 		}

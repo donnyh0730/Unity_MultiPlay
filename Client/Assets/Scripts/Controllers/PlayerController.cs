@@ -102,7 +102,7 @@ public class PlayerController : CreatureController
 
     }
 
-    public void UseSkill(int skillId)
+    public override void UseSkill(int skillId)
     {
         switch (skillId)
         {

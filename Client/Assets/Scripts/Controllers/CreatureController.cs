@@ -56,7 +56,7 @@ public class CreatureController : BaseController
 
 	public virtual void OnDamaged(CreatureController attacker, int damage)
 	{
-
+		
 	}
 
 	public virtual void OnDead()
@@ -69,4 +69,9 @@ public class CreatureController : BaseController
 		
 		Managers.Object.Remove(Id);
 	}
+
+	public virtual void UseSkill(int skillId)
+    {
+        
+    }
 }

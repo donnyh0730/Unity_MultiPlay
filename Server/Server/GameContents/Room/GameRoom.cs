@@ -16,19 +16,27 @@ namespace Server.GameContents
         Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
         Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
-        public Map Map { get; private set; } = new Map();
-            
+        public Map Map { get; private set; } = new Map();    
 
         public void Init(int mapId)
         {
             Map.LoadMap(mapId, "../../../../../Common/MapData");
+            //Temp
+            Monster monster = ObjectManager.Instance.Add<Monster>();
+            monster.CellPos = new Vector2Int(5, 5);
+            EnterGame(monster);
+            //
         }
 
         public void Update()
         {
             lock(_lock)
             {
-                foreach(Projectile projectile in _projectiles.Values)
+                foreach (Monster monster in _monsters.Values)
+                {
+                    monster.Update();
+                }
+                foreach (Projectile projectile in _projectiles.Values)
                 {
                     projectile.Update();
                 }
@@ -141,6 +149,7 @@ namespace Server.GameContents
                         return;
 
                     projectile.Room = null;
+                    Map.ApplyLeave(projectile);
                 }
                 //타인에게 정보 전송.
                 {
@@ -242,6 +251,16 @@ namespace Server.GameContents
                 }
 
             }
+        }
+
+        public Player FindPlayer(Func<GameObject, bool> condition)
+        {
+            foreach(Player player in _players.Values)
+            {
+                if (condition.Invoke(player))
+                    return player;
+            }
+            return null;
         }
 
         public void Broadcast(IMessage packet)

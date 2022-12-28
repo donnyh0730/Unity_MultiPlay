@@ -18,11 +18,35 @@ namespace Server.GameContents
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public PositionInfo PosInfo { get; private set; } = new PositionInfo();
         public StatInfo Stat { get; private set; } = new StatInfo();
+        
+        public int Hp
+        {
+            get { return Stat.Hp; }
+            set { Stat.Hp = Math.Clamp(value, 0, Stat.MaxHp); }
+        }
+
+        public int MaxHp
+        {
+            get { return Stat.MaxHp; }
+            private set { Stat.MaxHp = Math.Clamp(value, 0, int.MaxValue); }
+        }
 
         public float Speed
         {
             get { return Stat.Speed; }
             set { Stat.Speed = value; }
+        }
+
+        public MoveDir Dir
+        {
+            get { return PosInfo.MoveDir; }
+            set { PosInfo.MoveDir = value; }
+        }
+
+        public CreatureState State
+        {
+            get { return PosInfo.State; }
+            set { PosInfo.State = value; }
         }
 
         public GameObject()
@@ -48,6 +72,20 @@ namespace Server.GameContents
         {
 
         }
+
+        public static MoveDir GetDirFromVec(Vector2Int dir)
+        {
+            if (dir.x > 0)
+                return MoveDir.Right;
+            else if (dir.x < 0)
+                return MoveDir.Left;
+            else if (dir.y > 0)
+                return MoveDir.Up;
+            else
+                return MoveDir.Down;
+
+        }
+
         public Vector2Int GetFrontCellPos()
         {
             return GetFrontCellPos(PosInfo.MoveDir);
