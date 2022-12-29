@@ -15,13 +15,21 @@ using ServerCore;
 
 namespace Server
 {
-	
-	public class Program
+	class Program
 	{
 		static Listener _listener = new Listener();
-		static void FlushRoom()
-		{
-			JobTimer.Instance.Push(FlushRoom, 250);//자기 자신을 250ms마다 다시호출 하게끔 람다로 넣음.
+		static List<System.Timers.Timer> _timers = new List<System.Timers.Timer>();
+
+		static void TickRoom(GameRoom room, int tick = 100)
+        {
+			var timer = new System.Timers.Timer();
+			timer.Interval = tick;
+			timer.Elapsed += ((s, e) => { room.Update(tick); });
+			//↑↑시스템 타이머를 사용하면 메인쓰레드가아닌 워커쓰레드에서 실행될 수 있다.↑↑
+			timer.AutoReset = true;
+			timer.Enabled = true;
+
+			_timers.Add(timer);
 		}
 
 		static void Main(string[] args)
@@ -29,7 +37,8 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-            RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
+            GameRoom Room = RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
+			TickRoom(Room, 50);
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
@@ -45,7 +54,7 @@ namespace Server
 			
 			while (true)
 			{
-				RoomManager.Instance.Find(1).Update();
+				Thread.Sleep(100);
 			}
 		}
 	}

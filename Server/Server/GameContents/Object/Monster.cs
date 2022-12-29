@@ -83,7 +83,9 @@ namespace Server.GameContents
                 Terminate();
                 return;
             }
-            List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, false);
+
+            List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, true);
+
             if (path.Count < 2 || path.Count > _chaseCellDist)
             {
                 Terminate();

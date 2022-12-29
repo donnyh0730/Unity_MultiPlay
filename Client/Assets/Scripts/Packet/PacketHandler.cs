@@ -52,6 +52,11 @@ class PacketHandler
         if (go == null)
             return;
 
+        //서버응답은 서버Tick주기가 끝나야만 응답이 오므로 자기플레이어 컨트롤에 대한 응답이 늦다.
+        //따라서 MMORPG의경우에 자기 케릭터 클라이언트에서는 서버응답을 받아서 움직이게하지 않는다.
+        if (Managers.Object.MyPlayer.Id == MovePacket.ObjectId)
+            return;
+
         BaseController bc = go.GetComponent<BaseController>();
         if (bc == null)
             return;

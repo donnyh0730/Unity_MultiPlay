@@ -51,9 +51,31 @@ namespace Server.GameContents
             return new Vector2Int(a.x - b.x, a.y - b.y);
         }
 
+        public static bool operator ==(Vector2Int a, Vector2Int b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+
+        public static bool operator !=(Vector2Int a, Vector2Int b)
+        {
+            return !(a == b);
+        }
+
         public static int GetCellDist(Vector2Int a, Vector2Int b)
         {
             return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector2Int @vec &&
+                   x == @vec.x &&
+                   y == @vec.y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
         }
 
         public int CellDistFromZero
@@ -112,6 +134,11 @@ namespace Server.GameContents
 
         public bool ApplyLeave(GameObject gameObject)
         {
+            if (gameObject.Room == null)
+                return false;
+            if (gameObject.Room.Map != this)
+                return false;
+
             PositionInfo posInfo = gameObject.PosInfo;
             if (posInfo.PosX < MinX || posInfo.PosX > MaxX)
                 return false;
@@ -131,6 +158,11 @@ namespace Server.GameContents
         public bool ApplyMove(GameObject gameObject, Vector2Int dest)
         {
             ApplyLeave(gameObject);
+
+            if (gameObject.Room == null)
+                return false;
+            if (gameObject.Room.Map != this)
+                return false;
 
             PositionInfo posInfo = gameObject.PosInfo;
             if (CanGo(dest, true) == false)

@@ -18,7 +18,7 @@ namespace Server.GameContents
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public PositionInfo PosInfo { get; private set; } = new PositionInfo();
         public StatInfo Stat { get; private set; } = new StatInfo();
-        
+
         public int Hp
         {
             get { return Stat.Hp; }
@@ -116,6 +116,8 @@ namespace Server.GameContents
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
+            if (Room == null)
+                return;
             Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
             S_ChangeHp hpPacket = new S_ChangeHp();
@@ -131,15 +133,19 @@ namespace Server.GameContents
 
         public virtual void OnDead(GameObject attacker)
         {
+            if (Room == null)
+                return;
+
             GameRoom room = Room;
             S_Die diePacket = new S_Die();
             diePacket.ObjectId = Id;
             diePacket.AttackerId = attacker.Id;
             room.Broadcast(diePacket);
-            
-            room.LeaveGame(Id);
 
-            Stat.Hp = Stat.MaxHp;
+            room.LeaveGame(Id);
+            //만약 위의 LeaveGame비동기 Push할 경우 아래코드가 먼저 실행될 수 있으므로 비동기 실행하지 않는다.
+            //사실상 OnDamaged와 OnDead는 메인쓰레드 로직이므로 Push할 필요가 없긴하다.
+            Stat.Hp = Stat.MaxHp; 
             PosInfo.State = CreatureState.Idle;
             PosInfo.MoveDir = MoveDir.Down;
             PosInfo.PosX = 0;
