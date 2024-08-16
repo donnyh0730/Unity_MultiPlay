@@ -10,6 +10,7 @@ using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
 using Server.Data;
+using Server.DB;
 using Server.GameContents;
 using ServerCore;
 
@@ -37,7 +38,15 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-            GameRoom Room = RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
+			//DBTest
+			using (AppDbContext db = new AppDbContext())
+			{
+				var testAccount = new AccountDb() { AccountName = "TestAccount01" };
+				db.Accounts.Add(testAccount);
+				db.SaveChanges();
+			}
+
+			GameRoom Room = RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
 			TickRoom(Room, 50);
 
 			// DNS (Domain Name System)

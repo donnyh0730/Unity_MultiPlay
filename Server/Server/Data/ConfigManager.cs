@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Text;
 
@@ -9,8 +10,7 @@ namespace Server.Data
     public class ServerConfig
     {
         public string dataPath;
-        
-        //TODO 전체적인 데이터경로나 URL등등 추가
+        public string connectionString;
     }
 
     public static class ConfigManager
