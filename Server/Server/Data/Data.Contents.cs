@@ -8,7 +8,7 @@ namespace Server.Data
     [Serializable]
     public class StatDataLoader : ILoader<int, StatInfo>
     {
-        //↓↓ JsonUtility.FromJson을 해주면 처음에 여기(stats) List형태로 들어와있음.
+        //↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
         public List<StatInfo> statInfos = new List<StatInfo>();
 
         public Dictionary<int, StatInfo> MakeDict()
@@ -46,7 +46,7 @@ namespace Server.Data
     [Serializable]
     public class SkillDataLoader : ILoader<int, SkillData>
     {
-        //↓↓ JsonUtility.FromJson을 해주면 처음에 여기(stats) List형태로 들어와있음.
+        //↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
         public List<SkillData> skillInfos = new List<SkillData>();
 
         public Dictionary<int, SkillData> MakeDict()
