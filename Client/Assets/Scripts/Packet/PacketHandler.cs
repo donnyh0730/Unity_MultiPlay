@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,4 +116,20 @@ class PacketHandler
             cc.OnDead();
         }
     }
+
+	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+	{
+        Debug.Log("S_ConnectedHandler");
+        C_LoginRequest LoginRequest = new C_LoginRequest();
+
+        LoginRequest.UniqueId = SystemInfo.deviceUniqueIdentifier;
+        Managers.Network.Send(LoginRequest);
+
+	}
+
+	public static void S_LoginResultHandler(PacketSession session, IMessage packet)
+	{
+		S_LoginResult LoginResult = (S_LoginResult)packet;
+        Debug.Log($"LoginResult : {LoginResult.LoginResult}");
+	}
 }

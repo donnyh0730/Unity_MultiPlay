@@ -38,17 +38,9 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-			//DBTest
-			using (AppDbContext db = new AppDbContext())
-			{
-				var testAccount = new AccountDb() { AccountName = "TestAccount01" };
-				db.Accounts.Add(testAccount);
-				db.SaveChanges();
-			}
-
 			GameRoom Room = RoomManager.Instance.CreateAndAddRoom(1);//여기서 ID가 1번인 GameRoom이 생성된다.
 			TickRoom(Room, 50);
-
+			
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);

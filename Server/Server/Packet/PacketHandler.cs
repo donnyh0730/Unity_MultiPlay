@@ -1,10 +1,12 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server;
+using Server.DB;
 using Server.GameContents;
 using ServerCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 class PacketHandler
@@ -45,4 +47,34 @@ class PacketHandler
 
         room.PushJob(room.HandleSkill, player, skillPacket);
     }
+
+	public static void C_LoginRequestHandler(PacketSession session, IMessage packet)
+	{
+		C_LoginRequest LoginRequest = packet as C_LoginRequest;
+        
+        ClientSession clientSession = session as ClientSession;
+        Console.WriteLine($"UniqueId({LoginRequest.UniqueId})");
+        //TODO 이런저런 보안체크 
+
+        //
+        using (AppDbContext db = new AppDbContext())
+        {
+            var Account = db.Accounts.Where(a => a.AccountName == LoginRequest.UniqueId).FirstOrDefault();
+
+            if(Account != null)
+            {
+                S_LoginResult loginOk = new S_LoginResult() { LoginResult = 1 };
+                clientSession.Send(loginOk);
+            }
+            else
+            {
+                AccountDb newAcc = new AccountDb() { AccountName = LoginRequest.UniqueId };
+                db.Accounts.Add(newAcc);
+                db.SaveChanges();
+
+				S_LoginResult loginOk = new S_LoginResult() { LoginResult = 1 };
+				clientSession.Send(loginOk);
+			}
+        }
+	}
 }
