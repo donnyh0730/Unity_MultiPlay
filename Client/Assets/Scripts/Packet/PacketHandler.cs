@@ -1,7 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -131,5 +130,38 @@ class PacketHandler
 	{
 		S_LoginResult LoginResult = (S_LoginResult)packet;
         Debug.Log($"LoginResult : {LoginResult.LoginResult}");
+
+        //TODO 로비UI에서 캐릭터목록을 보여주고, 선택할 수 있도록
+        if(LoginResult.Players == null || LoginResult.Players.Count == 0)
+        {
+            C_CreatePlayer createPlayerPkt = new C_CreatePlayer();
+            createPlayerPkt.Name = $"Player_{Random.Range(0,10000).ToString("0000")}";
+            Managers.Network.Send(createPlayerPkt);
+        }
+        else
+        {
+            LobbyPlayerInfo playerInfo = LoginResult.Players[0];
+            C_EnterGame enterGamePkt = new C_EnterGame();
+            enterGamePkt.Name = playerInfo.Name;
+			Managers.Network.Send(enterGamePkt);   
+        }
+	}
+
+	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		S_CreatePlayer createPlayerPacket = (S_CreatePlayer)packet;
+
+        if(createPlayerPacket.Player == null)//생성실패시 다시한번 랜덤값으로 시도
+        {
+			C_CreatePlayer createPlayerPkt = new C_CreatePlayer();
+			createPlayerPkt.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+			Managers.Network.Send(createPlayerPkt);
+		}
+        else
+        {
+			C_EnterGame enterGamePkt = new C_EnterGame();
+			enterGamePkt.Name = createPlayerPacket.Player.Name;
+			Managers.Network.Send(enterGamePkt);
+		}
 	}
 }

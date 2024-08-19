@@ -50,31 +50,21 @@ class PacketHandler
 
 	public static void C_LoginRequestHandler(PacketSession session, IMessage packet)
 	{
-		C_LoginRequest LoginRequest = packet as C_LoginRequest;
-        
         ClientSession clientSession = session as ClientSession;
-        Console.WriteLine($"UniqueId({LoginRequest.UniqueId})");
-        //TODO 이런저런 보안체크 
+		clientSession.HandleLogin((C_LoginRequest)packet);
+	}
 
-        //
-        using (AppDbContext db = new AppDbContext())
-        {
-            var Account = db.Accounts.Where(a => a.AccountName == LoginRequest.UniqueId).FirstOrDefault();
+	public static void C_EnterGameHandler(PacketSession session, IMessage message)
+	{
+		C_EnterGame c_EnterGame = (C_EnterGame)message;
+        ClientSession clientSession = (ClientSession)session;
+		clientSession.HandleEnterGame(c_EnterGame);
+	}
 
-            if(Account != null)
-            {
-                S_LoginResult loginOk = new S_LoginResult() { LoginResult = 1 };
-                clientSession.Send(loginOk);
-            }
-            else
-            {
-                AccountDb newAcc = new AccountDb() { AccountName = LoginRequest.UniqueId };
-                db.Accounts.Add(newAcc);
-                db.SaveChanges();
-
-				S_LoginResult loginOk = new S_LoginResult() { LoginResult = 1 };
-				clientSession.Send(loginOk);
-			}
-        }
+	public static void C_CreatePlayerHandler(PacketSession session, IMessage message)
+	{
+		C_CreatePlayer c_CreatePlayer = (C_CreatePlayer)message;
+		ClientSession clientSession = (ClientSession)session;
+        clientSession.HandleCreatePlayer(c_CreatePlayer);
 	}
 }

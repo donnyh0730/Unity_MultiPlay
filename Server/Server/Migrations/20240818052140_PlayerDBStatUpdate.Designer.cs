@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.DB;
 
@@ -10,9 +11,10 @@ using Server.DB;
 namespace Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240818052140_PlayerDBStatUpdate")]
+    partial class PlayerDBStatUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +57,6 @@ namespace Server.Migrations
                     b.Property<int>("Attack")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurrentExp")
-                        .HasColumnType("int");
-
                     b.Property<int>("Hp")
                         .HasColumnType("int");
 
@@ -72,6 +71,9 @@ namespace Server.Migrations
 
                     b.Property<float>("Speed")
                         .HasColumnType("real");
+
+                    b.Property<int>("TotalExp")
+                        .HasColumnType("int");
 
                     b.HasKey("PlayerDbId");
 

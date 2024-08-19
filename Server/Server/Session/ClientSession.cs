@@ -13,10 +13,12 @@ using Server.Data;
 
 namespace Server
 {
-	public class ClientSession : PacketSession
+	public partial class ClientSession : PacketSession
 	{
 		public Player MyPlayer { get; set; }
 		public int SessionId { get; set; }
+
+		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateLogin; 
 
 		public void Send(IMessage packet)
         {
@@ -36,32 +38,10 @@ namespace Server
 		public override void OnConnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
-
 			{
 				S_Connected connectedPacket = new S_Connected();
 				Send(connectedPacket);
 			}
-
-			//TODO : 로비에서 케릭터 선택
-			MyPlayer = ObjectManager.Instance.Add<Player>();
-            {
-				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
-				MyPlayer.Info.PosInfo.State = CreatureState.Idle;
-				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
-				MyPlayer.Info.PosInfo.PosX = 0;
-				MyPlayer.Info.PosInfo.PosY = 0;
-
-				StatInfo stat = DataManager.StatDict[1];
-				if(stat == null)
-                    Console.WriteLine("Stat Data is not available.");
-				MyPlayer.Stat.MergeFrom(stat);
-
-				MyPlayer.Session = this;
-            }
-
-			//TODO : when comes enterence request than Enter game.
-			GameRoom room = RoomManager.Instance.Find(1);
-			room.PushJob(room.EnterGame, MyPlayer);
         }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
