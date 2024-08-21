@@ -52,9 +52,10 @@ namespace Server
 
 			//FlushRoom();
 			//JobTimer.Instance.Push(FlushRoom);
-			
+
 			while (true)
 			{
+				//DbTransction.Instance.Flush();
 				Thread.Sleep(100);
 			}
 		}

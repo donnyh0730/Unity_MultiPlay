@@ -33,6 +33,11 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
 	#endregion
 
+	private void OnDestroy()
+	{
+		_network.Dispose();
+	}
+
 	void Start()
     {
         Init();

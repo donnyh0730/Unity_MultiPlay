@@ -7,7 +7,7 @@ namespace Server
     public class JobSerializer
     {
         JobTimer _timer = new JobTimer();
-		Queue<IJob> _jobQueue = new Queue<IJob>();
+		protected Queue<IJob> _jobQueue = new Queue<IJob>();
         object _lock = new object();
 
         public void PushJob(Action action)

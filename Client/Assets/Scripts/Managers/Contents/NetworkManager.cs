@@ -7,7 +7,7 @@ using UnityEngine;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 
-public class NetworkManager
+public class NetworkManager : IDisposable
 {
 	ServerSession _session = new ServerSession();
 
@@ -44,5 +44,11 @@ public class NetworkManager
 			if (handler != null)
 				handler.Invoke(_session, packet.Message);
 		}	
+	}
+
+	public void Dispose()
+	{
+		_session.Disconnect();
+		_session = null;
 	}
 }

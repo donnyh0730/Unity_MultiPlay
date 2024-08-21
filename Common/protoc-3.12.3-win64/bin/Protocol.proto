@@ -51,15 +51,16 @@ enum SkillType
 	SKILL_AUTO = 1;
 	SKILL_PROJECTILE = 2;
 }
-enum PlayerServerState{
+enum PlayerServerState {
 	SERVER_STATE_LOGIN = 0;
 	SERVER_STATE_LOBBY = 1;
 	SERVER_STATE_GAME = 2;
 }
 
-message LobbyPlayerInfo{
-	string name = 1;
-	StatInfo statInfo = 2;
+message LobbyPlayerInfo {
+	int32 playerDbId = 1;
+	string name = 2;
+	StatInfo statInfo = 3;
 }
 
 message ObjectInfo
