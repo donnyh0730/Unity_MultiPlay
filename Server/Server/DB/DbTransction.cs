@@ -15,7 +15,7 @@ namespace Server
 	public class DbTransction : JobSerializer // main함수의 while루프에서 flush하고 있음.
 	{
 		public static DbTransction Instance { get; } = new DbTransction();
-
+	
 		public static void SaveDBPlayerStatus(Player player, GameRoom room)
 		{
 			//이 함수는 LeaveGame에서 불리고 있으므로, WorkerThread에서 처리중인 함수이다.

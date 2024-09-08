@@ -54,11 +54,11 @@ class PacketManager
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
-		if (CustomHandler != null)//클라이언트(유니티)의 경우 핸들러는 메인쓰레드에서 동작하도록
+		if (CustomHandler != null)
 		{
 			CustomHandler.Invoke(session, pkt, id);
 		}
-		else//서버인 경우 작업쓰레드에서 핸들러 호출까지 별문제 없이 가능.
+		else
 		{
 			Action<PacketSession, IMessage> action = null;
 			if (_handler.TryGetValue(id, out action))

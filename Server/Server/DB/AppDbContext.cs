@@ -13,6 +13,7 @@ namespace Server.DB
 	{
 		public DbSet<AccountDb> Accounts { get; set; }
 		public DbSet<PlayerDb> Players {  get; set; }
+		public DbSet<ItemDb> Items { get; set; }
 
 		public string ConnectionString
 		{

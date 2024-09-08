@@ -11,6 +11,7 @@ namespace Server.GameContents
     {
         public int PlayerDbId { get; set; }
         public ClientSession Session { get; set; }
+        public Inventory Inventory { get; private set; } = new Inventory();
 
         public Player()
         {
@@ -21,7 +22,8 @@ namespace Server.GameContents
         {
             //TODO
             base.OnDamaged(attacker, damage);
-            Console.WriteLine($"Damage : {damage}");
+			DbTransction.SaveDBPlayerStatus(this, Room);
+			Console.WriteLine($"Damage : {damage}");
         }
 
         public override void OnDead(GameObject attacker)

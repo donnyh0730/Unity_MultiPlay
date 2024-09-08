@@ -14,7 +14,7 @@ namespace Server
 {
 	public partial class ClientSession
 	{
-		public int AccountDbId {  get; private set; }
+		public int AccountDbId { get; private set; }
 		public List<LobbyPlayerInfo> LobbyPlayers { get; set; } = new List<LobbyPlayerInfo>();
 
 		public void HandleLogin(C_LoginRequest loginRequest)
@@ -39,7 +39,7 @@ namespace Server
 
 					S_LoginResult loginResult = new S_LoginResult() { LoginResult = 1 };
 
-					foreach(PlayerDb playerDb in Account.Players)
+					foreach (PlayerDb playerDb in Account.Players)
 					{
 						LobbyPlayerInfo lobbyPlayerInfo = new LobbyPlayerInfo()
 						{
@@ -102,6 +102,30 @@ namespace Server
 				MyPlayer.Info.PosInfo.PosY = 0;
 				MyPlayer.Stat.MergeFrom(PlayerInfo.StatInfo);//그냥 값복사 코드다.
 				MyPlayer.Session = this;
+
+				S_ItemInfolist itemListPacket = new S_ItemInfolist();
+
+				using (AppDbContext db = new AppDbContext())
+				{
+					List<ItemDb> itemDbDatas = db.Items
+										.Where(i => i.OwnerDbId == PlayerInfo.PlayerDbId)
+										.ToList();
+
+					foreach (ItemDb itemDb in itemDbDatas)
+					{
+						//TODO : 슬롯 번호를 보고 서버 player객체의 Inventory나 창고등에 넣는다. 
+						Item item = Item.MakeItem(itemDb);
+						if (item != null)
+						{
+							MyPlayer.Inventory.Add(item);
+							ItemInfo info = new ItemInfo();
+							info.MergeFrom(item.itemInfo);
+							itemListPacket.ItemsInfos.Add(info);
+						}	
+					}
+					//TODO 클라한테도 아이템 목록을 송신한다. 
+				}
+				Send(itemListPacket);
 			}
 
 			ServerState = PlayerServerState.ServerStateGame;
@@ -120,7 +144,7 @@ namespace Server
 				PlayerDb findplayer = db.Players
 					.Where(p => p.PlayerName == createPlayerPkt.Name)
 					.FirstOrDefault();
-				if(findplayer !=null )
+				if (findplayer != null)
 				{
 					//이미 있는 이름인 경우 빈깡통패킷을보낸다.
 					Send(new S_CreatePlayer());

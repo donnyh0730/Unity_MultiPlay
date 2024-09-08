@@ -44,7 +44,9 @@ class PacketManager
 		_onRecv.Add((ushort)MsgId.SLoginResult, MakePacket<S_LoginResult>);
 		_handler.Add((ushort)MsgId.SLoginResult, PacketHandler.S_LoginResultHandler);		
 		_onRecv.Add((ushort)MsgId.SCreatePlayer, MakePacket<S_CreatePlayer>);
-		_handler.Add((ushort)MsgId.SCreatePlayer, PacketHandler.S_CreatePlayerHandler);
+		_handler.Add((ushort)MsgId.SCreatePlayer, PacketHandler.S_CreatePlayerHandler);		
+		_onRecv.Add((ushort)MsgId.SItemInfolist, MakePacket<S_ItemInfolist>);
+		_handler.Add((ushort)MsgId.SItemInfolist, PacketHandler.S_ItemInfolistHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
@@ -66,11 +68,11 @@ class PacketManager
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
-		if (CustomHandler != null)//클라이언트(유니티)의 경우 핸들러는 메인쓰레드에서 동작하도록
+		if (CustomHandler != null)
 		{
 			CustomHandler.Invoke(session, pkt, id);
 		}
-		else//서버인 경우 작업쓰레드에서 핸들러 호출까지 별문제 없이 가능.
+		else
 		{
 			Action<PacketSession, IMessage> action = null;
 			if (_handler.TryGetValue(id, out action))

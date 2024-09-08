@@ -164,4 +164,14 @@ class PacketHandler
 			Managers.Network.Send(enterGamePkt);
 		}
 	}
+
+	internal static void S_ItemInfolistHandler(PacketSession session, IMessage message)
+	{
+        S_ItemInfolist itemList = (S_ItemInfolist)message;
+
+        foreach(ItemInfo info in itemList.ItemsInfos)
+        {
+            Debug.Log($"ItemTemplate ID : {info.TemplateId}, Item Count : {info.Count}");
+        }
+	}
 }

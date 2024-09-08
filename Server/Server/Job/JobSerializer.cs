@@ -10,22 +10,22 @@ namespace Server
 		protected Queue<IJob> _jobQueue = new Queue<IJob>();
         object _lock = new object();
 
-        public void PushJob(Action action)
+        public virtual void PushJob(Action action)
         {
             PushJob(new Job(action));
         }
 
-        public void PushJob<T1>(Action<T1> action, T1 t1)
+        public virtual void PushJob<T1>(Action<T1> action, T1 t1)
         {
             PushJob(new Job<T1>(action, t1));
         }
 
-        public void PushJob<T1, T2>(Action<T1, T2> action, T1 t1, T2 t2)
+        public virtual void PushJob<T1, T2>(Action<T1, T2> action, T1 t1, T2 t2)
         {
             PushJob(new Job<T1, T2>(action, t1, t2));
         }
 
-        public void PushJob<T1, T2, T3>(Action<T1, T2, T3> action, T1 t1, T2 t2, T3 t3)
+        public virtual void PushJob<T1, T2, T3>(Action<T1, T2, T3> action, T1 t1, T2 t2, T3 t3)
         {
             PushJob(new Job<T1, T2, T3>(action, t1, t2 ,t3));
         }
