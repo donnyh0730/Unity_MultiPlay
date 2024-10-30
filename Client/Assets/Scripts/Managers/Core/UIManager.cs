@@ -6,10 +6,15 @@ public class UIManager
 {
     int _order = 10;
 
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
-    UI_Scene _sceneUI = null;
+    public UI_Scene SceneUI 
+    {
+        get => _sceneUI;
+    }
 
-    public GameObject Root
+    private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    private UI_Scene _sceneUI = null;
+
+	public GameObject Root
     {
         get
         {

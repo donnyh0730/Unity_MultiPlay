@@ -19,14 +19,15 @@ namespace Server.Data
 
         public static void LoadData()
         {
-            StatDict = LoadJson<StatDataLoader, int, StatInfo>("S_StatData").MakeDict();
-            SkillDict = LoadJson<SkillDataLoader, int, SkillData>("S_SkillData").MakeDict();
-            ItemDict = LoadJson<ItemDataLoader, int, ItemData>("S_ItemData").MakeDict();
+            StatDict = LoadCommonJson<StatDataLoader, int, StatInfo>("S_StatData").MakeDict();
+            SkillDict = LoadCommonJson<SkillDataLoader, int, SkillData>("S_SkillData").MakeDict();
+            ItemDict = LoadCommonJson<ItemDataLoader, int, ItemData>("S_ItemData").MakeDict();
         }
 
-        static Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+		//이 함수는 Common/config.json 에 박혀있는 패스에서 데이터들을 읽어온다. 
+		static Loader LoadCommonJson<Loader, Key, Value>(string fileName) where Loader : ILoader<Key, Value>
         {
-            string text = File.ReadAllText($"{ConfigManager.Config.dataPath}/{path}.json");
+            string text = File.ReadAllText($"{ConfigManager.Config.dataPath}/{fileName}.json");
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Loader>(text);
         }
     }

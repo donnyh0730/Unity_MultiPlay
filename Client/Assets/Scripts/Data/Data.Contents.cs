@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.AssetImporters;
 using UnityEngine;
 
 namespace Data
@@ -40,4 +41,64 @@ namespace Data
             return dict;
         }
     }
+
+	[Serializable]
+	public class ItemData
+	{
+		public int Id;
+		public string Name;// todo string id
+		public ItemType ItemType;
+		public string IconPath;
+	}
+
+	[Serializable]
+	public class WeaponData : ItemData
+	{
+		public WeaponType WeaponType;
+		public int Damage;
+	}
+
+	[Serializable]
+	public class ArmorData : ItemData
+	{
+		public ArmorType ArmorType;
+		public int Defence;
+	}
+
+	[Serializable]
+	public class ConsumableData : ItemData
+	{
+		public ConsumableType ConsumableType;
+		public int MaxCount;
+	}
+
+	[Serializable]
+	public class ItemDataLoader : ILoader<int, ItemData>
+	{
+		//↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
+		public List<WeaponData> WeaponInfos = new List<WeaponData>();
+		public List<ArmorData> ArmorInfos = new List<ArmorData>();
+		public List<ConsumableData> ConsumableInfos = new List<ConsumableData>();
+
+		public Dictionary<int, ItemData> MakeDict()
+		{
+			Dictionary<int, ItemData> dict = new Dictionary<int, ItemData>();
+			foreach (ItemData itemInfo in WeaponInfos)
+			{
+				itemInfo.ItemType = ItemType.Weapon;
+				dict.Add(itemInfo.Id, itemInfo);
+			}
+			foreach (ItemData itemInfo in ArmorInfos)
+			{
+				itemInfo.ItemType = ItemType.Armor;
+				dict.Add(itemInfo.Id, itemInfo);
+			}
+			foreach (ItemData itemInfo in ConsumableInfos)
+			{
+				itemInfo.ItemType = ItemType.Consumable;
+				dict.Add(itemInfo.Id, itemInfo);
+			}
+			return dict;
+		}
+	}
 }

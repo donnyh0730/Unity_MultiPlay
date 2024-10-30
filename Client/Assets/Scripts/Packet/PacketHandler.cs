@@ -165,13 +165,23 @@ class PacketHandler
 		}
 	}
 
-	internal static void S_ItemInfolistHandler(PacketSession session, IMessage message)
+	public static void S_ItemInfolistHandler(PacketSession session, IMessage message)
 	{
         S_ItemInfolist itemList = (S_ItemInfolist)message;
 
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+
+        UI_Inventory invenUI = gameSceneUI.InvenUI;
+
+        Managers.Inventory.Clear();
+
         foreach(ItemInfo info in itemList.ItemsInfos)
         {
-            Debug.Log($"ItemTemplate ID : {info.TemplateId}, Item Count : {info.Count}");
+            Item item = Item.MakeItem(info);
+            Managers.Inventory.Add(item);
         }
+
+        //UI에서 표시
+        invenUI.RefreshUI();
 	}
 }

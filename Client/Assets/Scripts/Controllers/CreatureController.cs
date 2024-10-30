@@ -46,6 +46,7 @@ public class CreatureController : BaseController
 	void Update()
 	{
 		UpdateController();
+		UpdateKeyInput();
 	}
 
 	protected override void Init()

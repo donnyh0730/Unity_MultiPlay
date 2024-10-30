@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Google.Protobuf.Protocol;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using static Define;
 
 public class MyPlayerController : PlayerController
@@ -14,7 +15,20 @@ public class MyPlayerController : PlayerController
         base.Init();
     }
 
-    protected override void UpdateController()
+	protected override void UpdateKeyInput()
+	{
+		base.UpdateKeyInput();
+		var InvenUI = Managers.Inventory.InventoryUI;
+        if (InvenUI == null)
+            return;
+
+        if (Input.GetKey(KeyCode.I))
+        {
+            InvenUI.ToggleInputElapsed += Time.deltaTime;
+        }
+	}
+
+	protected override void UpdateController()
     {
         switch (State)
         {

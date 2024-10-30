@@ -267,6 +267,11 @@ public class BaseController : MonoBehaviour
         }
     }
 
+    protected virtual void UpdateKeyInput()
+    {
+
+    }
+
     protected virtual void UpdateIdle()
     {
     }

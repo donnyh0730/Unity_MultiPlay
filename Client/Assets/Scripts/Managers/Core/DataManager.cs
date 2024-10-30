@@ -13,15 +13,23 @@ public interface ILoader<Key, Value>
 public class DataManager
 {
     public static Dictionary<int, SkillData> SkillDict { get; private set; } = new Dictionary<int, SkillData>();
+    public static Dictionary<int, ItemData> ItemDict { get; private set; } = new Dictionary<int, ItemData>();
 
     public void Init()
     {
-        SkillDict = LoadJson<SkillDataLoader, int, SkillData>("C_SkillData").MakeDict();
-    }
+        SkillDataLoader skillDataLoader = LoadClientJson<SkillDataLoader, int, SkillData>("C_SkillData");
+		SkillDict = skillDataLoader.MakeDict();
 
-    Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+		ItemDataLoader itemDataLoader = LoadClientJson<ItemDataLoader, int, ItemData>("C_ItemData");
+		ItemDict = itemDataLoader.MakeDict();
+	}
+
+    //클라이언트 클라이언트에서 사용될 데이터들을 읽어온다. 
+    T LoadClientJson<T, Key, Value>(string path) where T : ILoader<Key, Value>
     {
 		TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
-        return JsonUtility.FromJson<Loader>(textAsset.text);
+        return JsonUtility.FromJson<T>(textAsset.text);
 	}
+    
+    //TODO : LoadCommonJson
 }
