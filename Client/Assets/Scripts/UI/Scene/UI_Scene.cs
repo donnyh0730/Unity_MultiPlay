@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class UI_Scene : UI_Base
 {
-	public const float ToggleInputBlockTime = 0.75f;
-	public float ToggleInputElapsed
-	{
-		get => toggleInputElapsed;
-		set
-		{
-			toggleInputElapsed = value;
-			if (toggleInputElapsed > ToggleInputBlockTime)
-			{
-				toggleInputElapsed = 0;
-				ToggleUI();
-			}
-		}
-	}
-	private float toggleInputElapsed = 0.0f;
-
 	public override void Init()
 	{
 		Managers.UI.SetCanvas(gameObject, false);

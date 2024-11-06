@@ -22,9 +22,9 @@ public class MyPlayerController : PlayerController
         if (InvenUI == null)
             return;
 
-        if (Input.GetKey(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            InvenUI.ToggleInputElapsed += Time.deltaTime;
+            InvenUI.ToggleUI();
         }
 	}
 

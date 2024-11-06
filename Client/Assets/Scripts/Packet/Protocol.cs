@@ -1127,7 +1127,7 @@ namespace Google.Protobuf.Protocol {
     public const int SkillIdFieldNumber = 1;
     private int skillId_;
     /// <summary>
-    ///TODO : Ω∫≈≥ ≈∏¿‘ µ•πÃ¡ˆ µÓµÓ 
+    ///TODO : Ω∫≈≥ ≈∏¿‘ µ•πÃ¡ÅEµ˚—ÅE
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int SkillId {
@@ -1839,7 +1839,7 @@ namespace Google.Protobuf.Protocol {
         = pb::FieldCodec.ForMessage(10, global::Google.Protobuf.Protocol.ObjectInfo.Parser);
     private readonly pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> objectInfos_ = new pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo>();
     /// <summary>
-    ///≥ª «√∑π¿ÃæÓ∞° Ω∫∆˘µ…∂ß ¡÷∫Øø° ∞∞¿Ã º“»Øµ… ≈©∏Æ√≥∏Ò∑œ.
+    ///≥ª «√∑π¿Ãæ˚Ã° Ω∫∆˘µ…∂ß ¡÷∫Øø° ∞∞¿Ã º“»Øµ… ≈©∏Æ√≥∏Ò∑œ.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> ObjectInfos {
