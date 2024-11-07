@@ -92,7 +92,7 @@ namespace Server
 			if (PlayerInfo == null)
 				return;
 
-			MyPlayer = ObjectManager.Instance.Add<Player>();
+			MyPlayer = ObjectManager.Instance.AddObject<Player>();
 			{
 				MyPlayer.PlayerDbId = PlayerInfo.PlayerDbId;
 				MyPlayer.Info.Name = PlayerInfo.Name;

@@ -29,7 +29,6 @@ namespace Data
     [Serializable]
     public class SkillDataLoader : ILoader<int, SkillData>
     {
-        //↓↓ JsonUtility.FromJson을 해주면 처음에 여기(stats) List형태로 들어와있음.
         public List<SkillData> skillInfos = new List<SkillData>();
 
         public Dictionary<int, SkillData> MakeDict()
@@ -100,4 +99,32 @@ namespace Data
 			return dict;
 		}
 	}
+
+    #region Monster
+    [Serializable]
+    public class MonsterData
+    {
+        public int id;
+        public string name;
+        public string prefabPath;
+        public StatInfo stat;
+    }
+
+    [Serializable]
+    public class MonsterDataLoader : ILoader<int, MonsterData>
+    {
+        public List<MonsterData> MonsterDatas = new List<MonsterData>();
+
+        public Dictionary<int, MonsterData> MakeDict()
+        {
+            Dictionary<int, MonsterData> dict = new Dictionary<int, MonsterData>();
+            foreach (MonsterData monsterData in MonsterDatas)
+            {
+                dict.Add(monsterData.id, monsterData);
+            }
+            return dict;
+        }
+    }
+    #endregion
+
 }

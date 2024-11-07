@@ -28,7 +28,16 @@ namespace Server.GameContents
 
         public override void OnDead(GameObject attacker)
         {
+            GameRoom room = Room;
             base.OnDead(attacker);
+
+            Stat.Hp = Stat.MaxHp;
+            PosInfo.State = CreatureState.Idle;
+            PosInfo.MoveDir = MoveDir.Down;
+            PosInfo.PosX = 0;
+            PosInfo.PosY = 0;
+
+            room.EnterGame(this);
         }
 
         public void OnLeaveGame()//OnDisConnected시에 호출된다.

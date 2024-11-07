@@ -10,7 +10,7 @@ class PacketHandler
     public static void S_EnterGameHandler(PacketSession session, IMessage packet)
     {
         S_EnterGame enterGamePacket = packet as S_EnterGame;
-        Managers.Object.Add(enterGamePacket.ObjectInfo, bMyPlayer: true);
+        Managers.Object.AddObject(enterGamePacket.ObjectInfo, bMyPlayer: true);
 
         Debug.Log("S_EnterGame");
     }
@@ -28,7 +28,7 @@ class PacketHandler
         S_Spawn SpawnPacket = packet as S_Spawn;
         foreach (ObjectInfo info in SpawnPacket.ObjectInfos)
         {
-            Managers.Object.Add(info, bMyPlayer: false);
+            Managers.Object.AddObject(info, bMyPlayer: false);
         }
         Debug.Log("S_SpawnHandler");
         //Debug.Log(SpawnPacket.ObjectInfos);

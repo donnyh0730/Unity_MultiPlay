@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Server.Data
 {
+    #region Stat
+    //↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
     [Serializable]
     public class StatDataLoader : ILoader<int, StatInfo>
     {
@@ -22,7 +24,9 @@ namespace Server.Data
             return dict;
         }
     }
+    #endregion
 
+    #region Skill
     [Serializable]
     public class SkillData
     {
@@ -46,9 +50,7 @@ namespace Server.Data
     [Serializable]
     public class SkillDataLoader : ILoader<int, SkillData>
     {
-        //↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
         public List<SkillData> skillInfos = new List<SkillData>();
-
         public Dictionary<int, SkillData> MakeDict()
         {
             Dictionary<int, SkillData> dict = new Dictionary<int, SkillData>();
@@ -57,8 +59,10 @@ namespace Server.Data
             return dict;
         }
     }
+    #endregion
 
-	[Serializable]
+    #region Item
+    [Serializable]
 	public class ItemData
 	{
 		public int Id;
@@ -90,7 +94,6 @@ namespace Server.Data
 	[Serializable]
 	public class ItemDataLoader : ILoader<int, ItemData>
 	{
-		//↓↓ Newtonsoft.Json.JsonConvert.DeserializeObject을 해주면 처음에 여기(stats) List형태로 들어와있음.
 		public List<WeaponData> WeaponInfos = new List<WeaponData>();
 		public List<ArmorData> ArmorInfos = new List<ArmorData>();
 		public List<ConsumableData> ConsumableInfos = new List<ConsumableData>();
@@ -116,4 +119,41 @@ namespace Server.Data
 			return dict;
 		}
 	}
+    #endregion
+
+    #region Monster
+    [Serializable]
+    public class MonsterData
+    {
+        public int Id;
+        public string Name;
+        public StatInfo Stat;
+        public List<RewardData> Rewards;
+        //public string PrefabPath;
+    }
+
+    [Serializable]
+    public class RewardData
+    {
+        public int Probability; //일단 100분율
+        public int ItemId;
+        public int Count;
+    }
+
+    [Serializable]
+    public class MonsterDataLoader : ILoader<int, MonsterData>
+    {
+        public List<MonsterData> MonsterDatas = new List<MonsterData>();
+
+        public Dictionary<int, MonsterData> MakeDict()
+        {
+            Dictionary<int, MonsterData> dict = new Dictionary<int, MonsterData>();
+            foreach (MonsterData monsterData in MonsterDatas)
+            {
+                dict.Add(monsterData.Id, monsterData);
+            }
+            return dict;
+        }
+    }
+    #endregion
 }

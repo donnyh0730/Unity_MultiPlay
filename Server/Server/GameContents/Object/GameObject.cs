@@ -14,6 +14,12 @@ namespace Server.GameContents
             set { Info.ObjectId = value; }
         }
 
+        public int TemplateId
+        {
+            get { return Info.TemplateId; }
+            set { Info.TemplateId = value; }
+        }
+
         public GameRoom Room { get; set; }
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public PositionInfo PosInfo { get; private set; } = new PositionInfo();
@@ -51,6 +57,7 @@ namespace Server.GameContents
 
         public GameObject()
         {
+            Info.TemplateId = 0;
             Info.PosInfo = PosInfo;
             Info.StatInfo = Stat;
         }
@@ -135,7 +142,7 @@ namespace Server.GameContents
         {
             if (Room == null)
                 return;
-
+            State = CreatureState.Dead;
             GameRoom room = Room;
             S_Die diePacket = new S_Die();
             diePacket.ObjectId = Id;
@@ -143,15 +150,17 @@ namespace Server.GameContents
             room.Broadcast(diePacket);
 
             room.LeaveGame(Id);
-            //만약 위의 LeaveGame비동기 Push할 경우 아래코드가 먼저 실행될 수 있으므로 비동기 실행하지 않는다.
-            //사실상 OnDamaged와 OnDead는 메인쓰레드 로직이므로 Push할 필요가 없긴하다.
-            Stat.Hp = Stat.MaxHp; 
-            PosInfo.State = CreatureState.Idle;
-            PosInfo.MoveDir = MoveDir.Down;
-            PosInfo.PosX = 0;
-            PosInfo.PosY = 0;
 
-            room.EnterGame(this);
+            //room.PushAfter(() => 
+            //{
+            //    Stat.Hp = Stat.MaxHp;
+            //    PosInfo.State = CreatureState.Idle;
+            //    PosInfo.MoveDir = MoveDir.Down;
+            //    PosInfo.PosX = 0;
+            //    PosInfo.PosY = 0;
+
+            //    room.EnterGame(this);
+            //}, 1000);
         }
     }
 }

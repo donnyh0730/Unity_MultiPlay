@@ -17,7 +17,7 @@ namespace Server.GameContents
         int _counter = 1;
 
         //↓↓ T는 GameObject하위클래스여야하며, new로 할당 가능해햐한다.
-        public T Add<T>() where T : GameObject, new()
+        public T AddObject<T>() where T : GameObject, new()
         {
             T gameObject = new T();
             lock (_lock)

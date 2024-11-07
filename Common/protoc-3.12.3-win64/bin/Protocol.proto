@@ -89,10 +89,11 @@ message LobbyPlayerInfo {
 
 message ObjectInfo
 {
-	int32 objectId = 1;
-	string name = 2;
-	PositionInfo posInfo = 3;
-	StatInfo statInfo = 4;
+	int32 templateId = 1;
+	int32 objectId = 2;
+	string name = 3;
+	PositionInfo posInfo = 4;
+	StatInfo statInfo = 5;
 }
 message PositionInfo
 {
@@ -113,7 +114,7 @@ message StatInfo
 message SkillInfo
 {
 	int32 skillId = 1;
-	//TODO : Ω∫≈≥ ≈∏¿‘ µ•πÃ¡ˆ µÓµÓ 
+	//TODO : Ω∫≈≥ ≈∏¿‘ µ•πÃ¡ÅEµ˚—ÅE
 }
 message ItemInfo 
 {
@@ -135,7 +136,7 @@ message S_LeaveGame
 }
 message S_Spawn
 {
-	repeated ObjectInfo objectInfos = 1;//≥ª «√∑π¿ÃæÓ∞° Ω∫∆˘µ…∂ß ¡÷∫Øø° ∞∞¿Ã º“»Øµ… ≈©∏Æ√≥∏Ò∑œ.
+	repeated ObjectInfo objectInfos = 1;//≥ª «√∑π¿Ãæ˚Ã° Ω∫∆˘µ…∂ß ¡÷∫Øø° ∞∞¿Ã º“»Øµ… ≈©∏Æ√≥∏Ò∑œ.
 }
 message S_Despawn
 {

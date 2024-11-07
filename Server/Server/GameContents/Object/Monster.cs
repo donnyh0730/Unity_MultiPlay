@@ -11,15 +11,28 @@ namespace Server.GameContents
         Vector2Int _destCellPos;
         int _skillRange = 1; //TODO 패킷에 필드 추가.
         bool _isRange = false; //TODO 패킷에 필드 추가.
+
+        Player _target;
+        int _SearchCellDist = 8;
+        long _nextSearchTick = 0;
+
+        long _nextMoveTick = 0;
+        int _chaseCellDist = 15;
+        long _coolTime = 0;
+
         public Monster()
         {
             ObjectType = GameObjectType.Monster;
-            //Temp
-            Stat.Level = 1;
-            Stat.Hp = 100;
-            Stat.MaxHp = 100;
-            Stat.Speed = 5.0f;
+        }
 
+        public void Init(int templateId)
+        {
+            TemplateId = templateId;
+            DataManager.MonsterDict.TryGetValue(templateId, out var data);
+            Info.Name = data.Name;
+            
+            Stat.MergeFrom(data.Stat);
+            Stat.Hp = data.Stat.MaxHp;
             State = CreatureState.Idle;
         }
 
@@ -41,9 +54,7 @@ namespace Server.GameContents
                     break;
             }
         }
-        Player _target;
-        int _SearchCellDist = 8;
-        long _nextSearchTick = 0;
+        
         protected virtual void UpdateIdle()
         {
             if (_nextSearchTick > Environment.TickCount64)
@@ -63,8 +74,6 @@ namespace Server.GameContents
             State = CreatureState.Moving;
         }
 
-        long _nextMoveTick = 0;
-        int _chaseCellDist = 15;
         protected virtual void UpdateMoving()
         {
             if (_nextMoveTick > Environment.TickCount64)
@@ -116,7 +125,6 @@ namespace Server.GameContents
             }
         }
 
-        long _coolTime = 0;
         protected virtual void UpdateSkill()
         {
             if(_coolTime == 0)
@@ -164,9 +172,10 @@ namespace Server.GameContents
 
         protected virtual void UpdateDead()
         {
-
+            
         }
 
+        
         protected virtual bool SkillRangeCheck()
         {
             if (_target != null)
@@ -189,6 +198,19 @@ namespace Server.GameContents
             movePacket.ObjectId = Id;
             movePacket.PosInfo = PosInfo;
             Room.Broadcast(movePacket);
+        }
+
+        public override void OnDead(GameObject attacker)
+        {
+            base.OnDead(attacker);
+
+        }
+
+        public RewardData GetRandomRewarData()
+        {
+            RewardData rewardData = new RewardData();
+
+            return rewardData;
         }
     }
 }

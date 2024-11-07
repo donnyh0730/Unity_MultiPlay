@@ -16,11 +16,14 @@ namespace Server.GameContents
 
         public Map Map { get; private set; } = new Map();
 
+        bool bRespawning = false;
+
         public void Init(int mapId)
         {
             Map.LoadMap(mapId, "../../../../../Common/MapData");
             //Temp
-            Monster monster = ObjectManager.Instance.Add<Monster>();
+            Monster monster = ObjectManager.Instance.AddObject<Monster>();
+            monster.Init(1);
             monster.CellPos = new Vector2Int(5, 5);
             EnterGame(monster);
             //
@@ -37,6 +40,19 @@ namespace Server.GameContents
                 monster.Update();
             }
             Flush();
+
+            if (_monsters.Values.Count == 0 && !bRespawning)
+            {
+                bRespawning = true;
+                PushAfter(() =>
+                {
+                    Monster monster = ObjectManager.Instance.AddObject<Monster>();
+                    monster.Init(1);
+                    monster.CellPos = new Vector2Int(5, 5);
+                    EnterGame(monster);
+                    bRespawning = false;
+                },1000);
+            }
         }
 
         public void EnterGame(GameObject gameObject)
@@ -226,7 +242,7 @@ namespace Server.GameContents
                 case SkillType.SkillProjectile:
                     {
                         //TODO : Arrow
-                        Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                        Arrow arrow = ObjectManager.Instance.AddObject<Arrow>();
                         if (arrow == null)
                             return;
                         arrow.Owner = player;

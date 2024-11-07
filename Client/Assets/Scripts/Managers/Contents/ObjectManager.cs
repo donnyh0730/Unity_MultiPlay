@@ -15,7 +15,7 @@ public class ObjectManager
 		return (GameObjectType)type;
     }
 
-	public void Add(ObjectInfo info, bool bMyPlayer = false)
+	public void AddObject(ObjectInfo info, bool bMyPlayer = false)
     {
 		GameObjectType type = GetGameObjectTypeById(info.ObjectId);
 		if(type == GameObjectType.Player)
@@ -47,7 +47,9 @@ public class ObjectManager
         }
 		else if(type == GameObjectType.Monster)
         {
-            GameObject go = Managers.Resource.Instantiate("Creature/Monster");
+			DataManager.MonsterDict.TryGetValue(info.TemplateId, out var monsterdata);
+            GameObject go = Managers.Resource.Instantiate(monsterdata.prefabPath);
+
             go.name = info.Name;
             _objects.Add(info.ObjectId, go);
 
